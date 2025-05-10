@@ -5,6 +5,7 @@ import com.microsoft.playwright.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 04/05/2025
+ * updated 10/05/2025
  */
 public class BaseWebClient {
     protected final static Logger log = LogManager.getLogger(BaseWebClient.class);
@@ -62,6 +63,15 @@ public class BaseWebClient {
         String locator = this.configReader.getProperty(lokatorKey);
         String xpathLocator = "xpath=" + locator;
         return this.page.locator(xpathLocator);
+    }
+
+    public void waifForAMoment() {
+        try {
+            int seconds = (int)(Math.random() * 5) + 1;
+            Thread.sleep(Duration.ofSeconds(seconds));
+        } catch (Exception e) {
+            log.error("Error haciendo una pausa: {}", e.getMessage());
+        }
     }
 
     public String getPageLink() {

@@ -31,6 +31,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.getByTestId("LoginForm_Login_Button").click();
 
             log.debug("Se ha hecho login en Twitter con la cuenta: {}", this.username);
+            waifForAMoment();
 
             return true;
         } catch (Exception e) {
@@ -56,6 +57,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.getByTestId("tweetButtonInline").click();
 
             log.debug("Se ha posteado correctamente Twitter con el usuario: {}", this.username);
+            waifForAMoment();
 
             return true;
         } catch (Exception e) {
@@ -72,8 +74,12 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName("Eliminar").setExact(true)).locator("div").nth(2).click();
             this.page.getByTestId("confirmationSheetConfirm").click();
 
+            log.debug("Se ha eliminado correctamente el primer post del usuario: {}", this.username);
+            waifForAMoment();
+
             return true;
         } catch (Exception e) {
+            this.logError(String.format("Error eliminado de Twitter el primer post  del usuario: %s", this.username), e);
             return false;
         }
     }
@@ -86,6 +92,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.getXPathLocator("primera_sugerencia").click();
 
             log.debug("Se ha navegado a la primera sugerencia en Twitter para el usuario: {}", this.username);
+            waifForAMoment();
 
             return true;
         } catch (Exception e) {
@@ -101,6 +108,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.navigate(userUrl);
 
             log.debug("Se ha navegado a la página del usuario: {}", user);
+            waifForAMoment();
 
             return true;
         } catch (Exception e) {
@@ -169,6 +177,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
                 this.getXPathLocator("boton_seguir").click();
 
                 log.debug("El usuario {} ha seguido un nuevo usuario", this.username);
+                waifForAMoment();
 
                 return true;
             } catch (Exception e) {
@@ -196,6 +205,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
                 this.getXPathLocator("boton_seguir").click();
 
                 log.debug("El usuario {} ha dejado de seguir un usuario", this.username);
+                waifForAMoment();
 
                 return true;
             } catch (Exception e) {
