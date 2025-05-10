@@ -26,14 +26,14 @@ public class AutomataSessionManager {
         this.sessiones = new ArrayList<>();
     }
 
-    public RedSocialWebClient getSession(NombreRedSocial redSocial, String user, String password) {
+    public Optional<RedSocialWebClient> getSession(NombreRedSocial redSocial, String user, String password) {
         // Se devuelve la sessión si está creada para la red social y el usuario
         Optional<AutomataSession> session = this.sessiones.stream()
                 .filter(s -> s.getRedSocial().equals(redSocial) && s.getUser().equals(user))
                 .findFirst();
         if (session.isPresent()) {
             log.debug("Se ha devuelto una sesión existente del usuario {} para la red social: {}", user, redSocial);
-            return session.get().getRedSocialWebClient();
+            return Optional.of(session.get().getRedSocialWebClient());
         }
 
         log.debug("No existe sesión del usuario {} para la red social: {}. Se creará una.", user, redSocial);
@@ -44,7 +44,7 @@ public class AutomataSessionManager {
             this.sessiones.add(nuevaSession);
         }
 
-        return nuevaSession.getRedSocialWebClient();
+        return Optional.ofNullable(nuevaSession.getRedSocialWebClient());
     }
 
     public void removeSession(NombreRedSocial redSocial, String user) {

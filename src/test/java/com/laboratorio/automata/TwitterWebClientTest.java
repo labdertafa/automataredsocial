@@ -39,21 +39,21 @@ public class TwitterWebClientTest {
     public void postearImagen() {
         ConfigReader config = new ConfigReader("config//twitter_conf.properties");
         String rutaImagen = config.getProperty("imagen_test");
-        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password);
+        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password).get();
         boolean result = redSocialWebClient.postImage("Tweet de prueba con imagen enviado desde Playwright", rutaImagen);
         assertTrue(result);
     }
 
     @Test @Order(2)
     public void eliminarPrimerPost() {
-        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password);
+        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password).get();
         boolean result = redSocialWebClient.deleteFirstPost();
         assertTrue(result);
     }
 
     @Test @Order(3)
     public void seguirPrimeraSugerencia() {
-        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password);
+        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password).get();
         boolean result = redSocialWebClient.goToFirstSuggested();
         assertTrue(result);
         followedUser = redSocialWebClient.getUsername();
@@ -64,7 +64,7 @@ public class TwitterWebClientTest {
 
     @Test @Order(4)
     public void dejarDeSeguirSugerencia() {
-        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password);
+        RedSocialWebClient redSocialWebClient = sessionManager.getSession(NombreRedSocial.TWITTER, testUser, password).get();
         boolean result = redSocialWebClient.navigateToUserPage(followedUser);
         assertTrue(result);
         result = redSocialWebClient.unfollow();
