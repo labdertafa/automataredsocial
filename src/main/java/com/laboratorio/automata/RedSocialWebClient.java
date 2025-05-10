@@ -5,13 +5,14 @@ package com.laboratorio.automata;
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 04/05/2025
+ * updated 10/05/2025
  */
 public interface RedSocialWebClient {
     public boolean login();
 
     public boolean post(String text);
     public boolean postImage(String text, String imagePath);
+    public boolean deleteFirstPost();
 
     // Funciones para seguir nuevos usuarios
     public boolean goToFirstSuggested();

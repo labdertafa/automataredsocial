@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 04/05/2025
+ * updated 10/05/2025
  */
 public class TwitterWebClient extends BaseWebClient implements RedSocialWebClient {
     public TwitterWebClient(String url, String username, String password) {
@@ -30,7 +30,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Contraseña Mostrar contraseña")).fill(this.password);
             this.page.getByTestId("LoginForm_Login_Button").click();
 
-            log.info("Se ha hecho login en Twitter con la cuenta: {}", this.username);
+            log.debug("Se ha hecho login en Twitter con la cuenta: {}", this.username);
 
             return true;
         } catch (Exception e) {
@@ -55,11 +55,25 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             }
             this.page.getByTestId("tweetButtonInline").click();
 
-            log.info("Se ha posteado correctamente Twitter con el usuario: {}", this.username);
+            log.debug("Se ha posteado correctamente Twitter con el usuario: {}", this.username);
 
             return true;
         } catch (Exception e) {
             this.logError(String.format("Error posteando en Twitter con el usuario: %s", this.username), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteFirstPost() {
+        try {
+            this.page.getByTestId("AppTabBar_Profile_Link").click();
+            this.getXPathLocator("primer_post").click();
+            this.page.getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName("Eliminar").setExact(true)).locator("div").nth(2).click();
+            this.page.getByTestId("confirmationSheetConfirm").click();
+
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
@@ -71,7 +85,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             this.page.getByLabel("A quién seguir").getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Mostrar más")).click();
             this.getXPathLocator("primera_sugerencia").click();
 
-            log.info("Se ha navegado a la primera sugerencia en Twitter para el usuario: {}", this.username);
+            log.debug("Se ha navegado a la primera sugerencia en Twitter para el usuario: {}", this.username);
 
             return true;
         } catch (Exception e) {
@@ -86,7 +100,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             String userUrl = this.url + "/" + user;
             this.page.navigate(userUrl);
 
-            log.info("Se ha navegado a la página del usuario: {}", user);
+            log.debug("Se ha navegado a la página del usuario: {}", user);
 
             return true;
         } catch (Exception e) {
@@ -101,7 +115,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             String text = this.getXPathLocator("numero_seguidos").textContent();
             int seguidos = Integer.parseInt(text.replace(".", ""));
 
-            log.info("Se han recuperado los seguidos por un usuario: {}", seguidos);
+            log.debug("Se han recuperado los seguidos por un usuario: {}", seguidos);
 
             return seguidos;
         } catch (Exception e) {
@@ -116,7 +130,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             String text = this.getXPathLocator("numero_seguidores").textContent();
             int seguidores = Integer.parseInt(text.replace(".", ""));
 
-            log.info("Se han recuperado los seguidores de un usuario: {}", seguidores);
+            log.debug("Se han recuperado los seguidores de un usuario: {}", seguidores);
 
             return seguidores;
         } catch (Exception e) {
@@ -129,7 +143,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
     public boolean isFollowedByMe() {
         try {
             String text = this.getXPathLocator("boton_seguir").textContent();
-            return text.equalsIgnoreCase("siguiendo");
+            return text.equalsIgnoreCase("dejar de seguir");
         } catch (Exception e) {
             String message = String.format("Error comprobando si %s sigue esta cuenta", this.username);
             this.logError(message, e);
@@ -154,7 +168,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             try {
                 this.getXPathLocator("boton_seguir").click();
 
-                log.info("El usuario {} ha seguido un nuevo usuario", this.username);
+                log.debug("El usuario {} ha seguido un nuevo usuario", this.username);
 
                 return true;
             } catch (Exception e) {
@@ -181,7 +195,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             try {
                 this.getXPathLocator("boton_seguir").click();
 
-                log.info("El usuario {} ha dejado de seguir un usuario", this.username);
+                log.debug("El usuario {} ha dejado de seguir un usuario", this.username);
 
                 return true;
             } catch (Exception e) {

@@ -29,7 +29,7 @@ public class BaseWebClient {
     public BaseWebClient(String url, String username, String password) {
         this.url = url;
 
-        this.configReader = new ConfigReader("config//twitter_locators.properties");
+        this.configReader = new ConfigReader("config//twitter_conf.properties");
 
         this.playwright = Playwright.create();
         this.browser = playwright.chromium()
