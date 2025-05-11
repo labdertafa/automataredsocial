@@ -6,7 +6,7 @@
 
     <groupId>com.laboratorio</groupId>
     <artifactId>automataredsocial</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
     <name>Automata-Red-Social</name>
     <description>Libreria que permite la automatización de acciones de las principales redes sociales</description>

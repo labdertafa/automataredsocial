@@ -54,7 +54,8 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
                 this.page.locator("input[type='file']").setInputFiles(Paths.get(imagePath));
                 Thread.sleep(10000);
             }
-            this.page.getByTestId("tweetButtonInline").click();
+            // this.page.getByTestId("tweetButtonInline").click();
+            this.getXPathLocator("boton_postear").click();
 
             log.debug("Se ha posteado correctamente Twitter con el usuario: {}", this.username);
             waifForAMoment();
