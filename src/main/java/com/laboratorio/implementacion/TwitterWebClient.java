@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 10/05/2025
+ * updated 05/07/2025
  */
 public class TwitterWebClient extends BaseWebClient implements RedSocialWebClient {
     public TwitterWebClient(String url, String username, String password) {
@@ -156,7 +156,7 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
         } catch (Exception e) {
             String message = String.format("Error comprobando si %s sigue esta cuenta", this.username);
             this.logError(message, e);
-            throw new OperationException(message);
+            throw new OperationException(message, e);
         }
     }
 
@@ -166,8 +166,9 @@ public class TwitterWebClient extends BaseWebClient implements RedSocialWebClien
             String text = this.getXPathLocator("follow_indicator").textContent();
             return text.equalsIgnoreCase("te sigue");
         } catch (Exception e) {
-            this.logError(String.format("Error verificando si una cuenta sigue a: %s", this.username), e);
-            return false;
+            String message = String.format("Error verificando si una cuenta sigue a: %s", this.username);
+            this.logError(message, e);
+            throw new OperationException(message, e);
         }
     }
 

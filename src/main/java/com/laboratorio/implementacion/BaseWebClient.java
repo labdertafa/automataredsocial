@@ -14,7 +14,7 @@ import java.util.Map;
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 10/05/2025
+ * updated 05/07/2025
  */
 public class BaseWebClient {
     protected final static Logger log = LogManager.getLogger(BaseWebClient.class);
@@ -65,9 +65,10 @@ public class BaseWebClient {
         return this.page.locator(xpathLocator);
     }
 
+    // Hacer las acciones más lentas y en tiempos variables
     public void waifForAMoment() {
         try {
-            int seconds = (int)(Math.random() * 5) + 1;
+            int seconds = (int)(Math.random() * 15) + 1;
             Thread.sleep(Duration.ofSeconds(seconds));
         } catch (Exception e) {
             log.error("Error haciendo una pausa: {}", e.getMessage());
