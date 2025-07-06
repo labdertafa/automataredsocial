@@ -6,15 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  *
  * author Rafael
  * version 1.0
  * created 03/05/2025
- * updated 05/07/2025
+ * updated 06/07/2025
  */
 public class BaseWebClient {
     protected final static Logger log = LogManager.getLogger(BaseWebClient.class);
@@ -33,18 +32,17 @@ public class BaseWebClient {
         this.configReader = new ConfigReader("config//twitter_conf.properties");
 
         this.playwright = Playwright.create();
-        this.browser = playwright.chromium()
-                .launch(new BrowserType.LaunchOptions()
-                        .setHeadless(this.configReader.getProperty("headless").equalsIgnoreCase("si")));
 
-        // Configurar el contexto con idioma español (España)
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Accept-Language", "es-ES,es;q=0.9");
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
+                .setArgs(List.of("--lang=es-ES"))
+                .setHeadless(true);
+        this.browser = playwright.chromium().launch(launchOptions);
 
-        BrowserContext context = browser.newContext(new Browser.NewContextOptions()
-                        .setExtraHTTPHeaders(headers));
+        Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
+                .setLocale("es-ES");
+        BrowserContext context = browser.newContext(contextOptions);
         this.page = context.newPage();
-        this.page.setDefaultTimeout(15000);
+        this.page.setDefaultTimeout(20000);
         this.page.navigate(url);
 
         this.username = username;
